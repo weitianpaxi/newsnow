@@ -2,15 +2,9 @@ import { Command } from "cmdk"
 import { useMount } from "react-use"
 import type { SourceID } from "@shared/types"
 import { useMemo, useRef, useState } from "react"
-import { sources } from "@shared/sources"
-import clsx from "clsx"
-import { typeSafeObjectEntries } from "@shared/type.util"
 import pinyin from "@shared/pinyin.json"
-import { columns } from "@shared/metadata"
 import { OverlayScrollbar } from "../overlay-scrollbar"
-import { useSearchBar } from "~/hooks/useSearch"
 import { CardWrapper } from "~/components/column/card"
-import { useFocusWith } from "~/hooks/useFocus"
 
 import "./cmdk.css"
 
@@ -53,7 +47,7 @@ export function SearchBar() {
           title: source.title,
           column: source.column ? columns[source.column].zh : "未分类",
           name: source.name,
-          pinyin: pinyin?.[k as keyof typeof pinyin],
+          pinyin: pinyin?.[k as keyof typeof pinyin] ?? "",
         })))
     , [],
   )
@@ -92,7 +86,7 @@ export function SearchBar() {
         placeholder="搜索你想要的"
       />
       <div className="md:flex pt-2">
-        <OverlayScrollbar defer={false} className="overflow-y-auto md:min-w-275px">
+        <OverlayScrollbar defer className="overflow-y-auto md:min-w-275px">
           <Command.List>
             <Command.Empty> 没有找到，可以前往 Github 提 issue </Command.Empty>
             {
@@ -128,7 +122,7 @@ function SourceItem({ item }: {
     >
       <span className="flex gap-2 items-center">
         <span
-          className={clsx("w-4 h-4 rounded-md bg-cover")}
+          className={$("w-4 h-4 rounded-md bg-cover")}
           style={{
             backgroundImage: `url(/icons/${item.id.split("-")[0]}.png)`,
           }}
@@ -136,7 +130,7 @@ function SourceItem({ item }: {
         <span>{item.name}</span>
         <span className="text-xs text-neutral-400/80 self-end mb-3px">{item.title}</span>
       </span>
-      <span className={clsx(isFocused ? "i-ph-star-fill" : "i-ph-star-duotone", "bg-primary op-40")}></span>
+      <span className={$(isFocused ? "i-ph-star-fill" : "i-ph-star-duotone", "bg-primary op-40")}></span>
     </Command.Item>
   )
 }

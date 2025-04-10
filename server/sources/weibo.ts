@@ -27,7 +27,7 @@ interface Res {
 
 export default defineSource(async () => {
   const url = "https://weibo.com/ajax/side/hotSearch"
-  const res: Res = await $fetch(url)
+  const res: Res = await myFetch(url)
   return res.data.realtime
     .filter(k => !k.is_ad)
     .map((k) => {
@@ -37,7 +37,7 @@ export default defineSource(async () => {
         title: k.word,
         extra: {
           icon: k.icon && {
-            url: `/api/proxy?img=${encodeURIComponent(k.icon)}`,
+            url: proxyPicture(k.icon),
             scale: 1.5,
           },
         },
